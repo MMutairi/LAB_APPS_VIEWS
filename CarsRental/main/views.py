@@ -1,5 +1,6 @@
 
-import django
+import secrets
+import string
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -12,5 +13,12 @@ def about_view(request):
     return HttpResponse(contact)
 
 def password_view(request):
-    contact = "hi"
+    characters = string.ascii_letters + string.digits + string.punctuation
+    while True:
+        contact = "".join(secrets.choice(characters) for _ in range(10))
+        if (any(char.islower() for char in contact)
+                and any(char.isupper() for char in contact)
+                and any(char.isdigit() for char in contact)
+                and any(char in string.punctuation for char in contact)):
+            break
     return HttpResponse(contact)
